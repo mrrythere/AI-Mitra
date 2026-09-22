@@ -1,6 +1,6 @@
 // =========================================================
 // AI-MITRA
-// Chapter 10 — Real Multi-Mitra Chat Integration
+// Real Multi-Mitra Chat + Dynamic Logged-In User
 // =========================================================
 
 const API_BASE_URL =
@@ -73,7 +73,6 @@ const sidebarMitraList =
 const settingsButton =
     document.getElementById("settingsButton");
 
-
 const chatMitraName =
     document.getElementById("chatMitraName");
 
@@ -81,7 +80,9 @@ const chatMitraAvatar =
     document.getElementById("chatMitraAvatar");
 
 const chatMitraPersonality =
-    document.getElementById("chatMitraPersonality");
+    document.getElementById(
+        "chatMitraPersonality"
+    );
 
 const typingAvatar =
     document.getElementById("typingAvatar");
@@ -89,6 +90,16 @@ const typingAvatar =
 const transparencyMitraName =
     document.getElementById(
         "transparencyMitraName"
+    );
+
+const sidebarUserName =
+    document.getElementById(
+        "sidebarUserName"
+    );
+
+const sidebarUserAvatar =
+    document.getElementById(
+        "sidebarUserAvatar"
     );
 
 
@@ -185,6 +196,93 @@ function handleUnauthorized() {
 
     window.location.href =
         "index.html";
+
+}
+
+
+// =========================================================
+// LOAD CURRENT LOGGED-IN USER
+// =========================================================
+
+async function loadCurrentUser() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE_URL}/me`,
+                {
+                    method: "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            `Bearer ${token}`
+
+                    }
+                }
+            );
+
+
+        if (response.status === 401) {
+
+            handleUnauthorized();
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            console.error(
+                data.detail ||
+                "Could not load user profile."
+            );
+
+            return;
+
+        }
+
+
+        const userName =
+            data.name &&
+            data.name.trim()
+                ? data.name.trim()
+                : "User";
+
+
+        if (sidebarUserName) {
+
+            sidebarUserName.textContent =
+                userName;
+
+        }
+
+
+        if (sidebarUserAvatar) {
+
+            sidebarUserAvatar.textContent =
+                userName
+                    .charAt(0)
+                    .toUpperCase();
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "User Profile API Error:",
+            error
+        );
+
+    }
 
 }
 
@@ -313,11 +411,13 @@ function formatPersonality(personality) {
 
     return personality
         .split(",")
-        .map(function (trait) {
+        .map(
+            function (trait) {
 
-            return trait.trim();
+                return trait.trim();
 
-        })
+            }
+        )
         .filter(Boolean)
         .join(" · ");
 
@@ -605,21 +705,27 @@ function addUserMessage(
 ) {
 
     const row =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     row.className =
         "message-row user-message";
 
 
     const content =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     content.className =
         "message-content";
 
 
     const bubble =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     bubble.className =
         "message-bubble user-bubble";
@@ -629,7 +735,9 @@ function addUserMessage(
 
 
     const time =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
     time.className =
         "message-time";
@@ -675,14 +783,18 @@ function addMitraMessage(
 ) {
 
     const row =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     row.className =
         "message-row nova-message";
 
 
     const avatar =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     avatar.className =
         "message-avatar";
@@ -692,14 +804,18 @@ function addMitraMessage(
 
 
     const content =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     content.className =
         "message-content";
 
 
     const name =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     name.className =
         "message-name";
@@ -709,7 +825,9 @@ function addMitraMessage(
 
 
     const bubble =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     bubble.className =
         "message-bubble nova-bubble";
@@ -719,7 +837,9 @@ function addMitraMessage(
 
 
     const time =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
     time.className =
         "message-time";
@@ -1030,7 +1150,9 @@ async function loadHistory() {
                     false
                 );
 
-            } else {
+            }
+
+            else {
 
                 addMitraMessage(
                     item.message,
@@ -1207,6 +1329,9 @@ chatForm.addEventListener(
 async function initializeChat() {
 
     try {
+
+        await loadCurrentUser();
+
 
         const mitraLoaded =
             await loadMitra();

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Mitras | AI-Mitra</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+
+<body class="dashboard-page">
+
+    <div class="dashboard-orb dashboard-orb-one"></div>
+    <div class="dashboard-orb dashboard-orb-two"></div>
+
+
+    <main class="dashboard-shell">
+
+        <!-- TOP NAVIGATION -->
+
+        <header class="dashboard-header">
+
+            <div class="dashboard-brand">
+
+                <div class="brand-icon">
+                    ✦
+                </div>
+
+                <span>
+                    AI-Mitra
+                </span>
+
+            </div>
+
+
+            <!-- USER MENU -->
+
+            <div
+                class="dashboard-user"
+                id="dashboardUser"
+                style="
+                    position: relative;
+                    cursor: pointer;
+                    user-select: none;
+                "
+            >
+
+                <div class="user-text">
+
+                    <span>
+                        Welcome back
+                    </span>
+
+                    <strong>
+                        Rahul
+                    </strong>
+
+                </div>
+
+                <div class="user-avatar">
+                    R
+                </div>
+
+
+                <!-- LOGOUT DROPDOWN -->
+
+                <div
+                    id="userDropdown"
+                    style="
+                        display: none;
+                        position: absolute;
+                        top: calc(100% + 12px);
+                        right: 0;
+                        min-width: 170px;
+                        padding: 8px;
+                        border-radius: 14px;
+                        border: 1px solid rgba(255,255,255,0.10);
+                        background: rgba(25, 25, 29, 0.98);
+                        box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+                        z-index: 1000;
+                    "
+                >
+
+                    <button
+                        type="button"
+                        id="logoutButton"
+                        style="
+                            width: 100%;
+                            padding: 11px 14px;
+                            border: none;
+                            border-radius: 10px;
+                            background: transparent;
+                            color: #ff9b9b;
+                            font: inherit;
+                            font-weight: 600;
+                            text-align: left;
+                            cursor: pointer;
+                        "
+                    >
+                        Log out
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- WELCOME SECTION -->
+
+        <section class="dashboard-welcome">
+
+            <p class="dashboard-label">
+                YOUR SPACE
+            </p>
+
+            <h1>
+                Good to see you,
+                <span>Rahul.</span>
+            </h1>
+
+            <p>
+                Who would you like to talk to today?
+            </p>
+
+        </section>
+
+
+        <!-- MITRA SECTION -->
+
+        <section class="mitras-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Your Mitras
+                    </h2>
+
+                    <p>
+                        The companions you've created.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="create-mitra-top"
+                    id="createMitraTop"
+                >
+                    <span>+</span>
+                    New Mitra
+                </button>
+
+            </div>
+
+
+            <div
+                class="mitra-grid"
+                id="mitraGrid"
+            >
+
+                <!-- Real Mitra cards inserted by dashboard.js -->
+
+
+                <button
+                    type="button"
+                    class="new-mitra-card"
+                    id="createMitraCard"
+                >
+
+                    <div class="new-mitra-icon">
+                        +
+                    </div>
+
+                    <h3>
+                        Create a new Mitra
+                    </h3>
+
+                    <p>
+                        Choose a name and personality
+                        that feels right for you.
+                    </p>
+
+                    <span class="create-text">
+                        Create your companion →
+                    </span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <footer class="dashboard-footer">
+
+            <span>
+                ✦ AI-Mitra
+            </span>
+
+            <p>
+                Your conversations. Your Mitras. Your space.
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <script src="dashboard.js"></script>
+
+</body>
+
+</html>

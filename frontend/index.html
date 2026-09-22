@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI-Mitra | Your Space to Talk</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="auth-page">
+
+    <!-- Ambient Background -->
+    <div class="ambient-orb orb-one"></div>
+    <div class="ambient-orb orb-two"></div>
+    <div class="ambient-orb orb-three"></div>
+
+    <main class="auth-container">
+
+        <!-- LEFT SIDE -->
+        <section class="auth-intro">
+
+            <div class="brand">
+                <div class="brand-icon">✦</div>
+                <span>AI-Mitra</span>
+            </div>
+
+            <div class="intro-content">
+
+                <p class="eyebrow">
+                    YOUR PERSONAL AI COMPANION
+                </p>
+
+                <h1>
+                    A little space
+                    <br>
+                    that feels like
+                    <span>yours.</span>
+                </h1>
+
+                <p class="intro-description">
+                    Create an AI Mitra with a personality that feels
+                    right for you. Talk, share, laugh, vent — whenever
+                    you feel like it.
+                </p>
+
+            </div>
+
+            <div class="mitra-presence">
+
+                <div class="mini-avatar">
+                    ✦
+                    <span class="online-dot"></span>
+                </div>
+
+                <div>
+                    <p>Your Mitra will be waiting.</p>
+                    <span>
+                        Personal · familiar · always clearly AI
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT SIDE -->
+        <section class="auth-card">
+
+            <!-- Mobile Logo -->
+            <div class="mobile-brand">
+                <div class="brand-icon">✦</div>
+
+                <div>
+                    <strong>AI-Mitra</strong>
+                    <span>Your space to talk</span>
+                </div>
+            </div>
+
+
+            <!-- LOGIN / SIGNUP SWITCH -->
+            <div class="auth-tabs">
+
+                <button
+                    type="button"
+                    id="loginTab"
+                    class="auth-tab active"
+                >
+                    Login
+                </button>
+
+                <button
+                    type="button"
+                    id="signupTab"
+                    class="auth-tab"
+                >
+                    Sign up
+                </button>
+
+            </div>
+
+
+            <!-- LOGIN -->
+            <form id="loginForm" class="auth-form">
+
+                <div class="form-heading">
+                    <h2>Welcome back 👋</h2>
+
+                    <p>
+                        Your Mitra is right where you left them.
+                    </p>
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="loginEmail">
+                        Email
+                    </label>
+
+                    <input
+                        id="loginEmail"
+                        type="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            id="loginPassword"
+                            type="password"
+                            placeholder="Your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            data-target="loginPassword"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Welcome back
+                    <span>→</span>
+                </button>
+
+                <p
+                    id="loginMessage"
+                    class="form-message"
+                ></p>
+
+            </form>
+
+
+            <!-- SIGNUP -->
+            <form
+                id="signupForm"
+                class="auth-form hidden"
+            >
+
+                <div class="form-heading">
+
+                    <h2>
+                        Let's create your space ✨
+                    </h2>
+
+                    <p>
+                        First you. Then we'll create your Mitra.
+                    </p>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="signupName">
+                        Your name
+                    </label>
+
+                    <input
+                        id="signupName"
+                        type="text"
+                        placeholder="What should we call you?"
+                        autocomplete="name"
+                        maxlength="50"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="signupEmail">
+                        Email
+                    </label>
+
+                    <input
+                        id="signupEmail"
+                        type="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="signupPassword">
+                        Create password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            id="signupPassword"
+                            type="password"
+                            placeholder="At least 6 characters"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            data-target="signupPassword"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Create my space
+                    <span>→</span>
+                </button>
+
+                <p
+                    id="signupMessage"
+                    class="form-message"
+                ></p>
+
+            </form>
+
+
+            <div class="auth-footer">
+                AI-Mitra is an AI experience designed to feel
+                personal while staying transparent about what it is.
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

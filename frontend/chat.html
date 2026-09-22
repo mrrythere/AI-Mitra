@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Chat | AI-Mitra</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+
+<body class="chat-page">
+
+    <div class="chat-ambient chat-ambient-warm"></div>
+    <div class="chat-ambient chat-ambient-violet"></div>
+
+
+    <main class="chat-shell">
+
+        <!-- SIDEBAR -->
+
+        <aside class="chat-sidebar">
+
+            <div class="chat-brand">
+
+                <div class="chat-brand-mark">
+                    ✦
+                </div>
+
+                <span>AI-Mitra</span>
+
+            </div>
+
+
+            <div class="sidebar-section">
+
+                <p class="sidebar-label">
+                    MY MITRAS
+                </p>
+
+
+                <div id="sidebarMitraList"></div>
+
+
+                <button
+                    class="sidebar-new-mitra"
+                    id="newMitraButton"
+                    type="button"
+                >
+                    <span>+</span>
+                    New Mitra
+                </button>
+
+            </div>
+
+
+            <div class="sidebar-bottom">
+
+                <button
+                    class="sidebar-dashboard"
+                    id="dashboardButton"
+                    type="button"
+                >
+                    ← My Mitras
+                </button>
+
+
+                <div class="sidebar-user">
+
+                    <div class="sidebar-user-avatar">
+                        R
+                    </div>
+
+                    <div>
+                        <strong>Rahul</strong>
+                        <span>Your space</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- CHAT AREA -->
+
+        <section class="chat-main">
+
+            <header class="chat-header">
+
+                <button
+                    class="mobile-chat-back"
+                    id="mobileChatBack"
+                    type="button"
+                    aria-label="Back to dashboard"
+                >
+                    ←
+                </button>
+
+
+                <div class="chat-person">
+
+                    <div class="chat-person-avatar-wrap">
+
+                        <div
+                            class="chat-person-avatar"
+                            id="chatMitraAvatar"
+                        >
+                            ✦
+                        </div>
+
+                        <span class="chat-online-dot"></span>
+
+                    </div>
+
+
+                    <div class="chat-person-info">
+
+                        <div class="chat-person-name">
+
+                            <h1 id="chatMitraName">
+                                Loading...
+                            </h1>
+
+                            <span class="ai-badge">
+                                AI Mitra
+                            </span>
+
+                        </div>
+
+
+                        <p>
+
+                            <span class="online-text">
+                                Online
+                            </span>
+
+                            <span class="header-dot">
+                                ·
+                            </span>
+
+                            <span id="chatMitraPersonality">
+                                Your AI companion
+                            </span>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="chat-more-button"
+                    id="settingsButton"
+                    type="button"
+                    aria-label="Open Mitra settings"
+                    title="Settings"
+                >
+                    ⚙
+                </button>
+
+            </header>
+
+
+            <!-- MESSAGES -->
+
+            <div
+                class="chat-messages"
+                id="chatMessages"
+            >
+
+                <div
+                    class="conversation-day"
+                    id="conversationDay"
+                >
+                    Today
+                </div>
+
+
+                <div
+                    class="message-row nova-message typing-row"
+                    id="typingIndicator"
+                >
+
+                    <div
+                        class="message-avatar"
+                        id="typingAvatar"
+                    >
+                        ✦
+                    </div>
+
+
+                    <div class="typing-bubble">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- COMPOSER -->
+
+            <div class="chat-composer-area">
+
+                <form
+                    class="chat-composer"
+                    id="chatForm"
+                >
+
+                    <textarea
+                        id="messageInput"
+                        rows="1"
+                        maxlength="2000"
+                        placeholder="Message your Mitra..."
+                        aria-label="Message your Mitra"
+                    ></textarea>
+
+
+                    <button
+                        class="send-message-button"
+                        id="sendMessageButton"
+                        type="submit"
+                        aria-label="Send message"
+                    >
+                        ↑
+                    </button>
+
+                </form>
+
+
+                <p class="chat-transparency">
+
+                    <span id="transparencyMitraName">
+                        Your Mitra
+                    </span>
+
+                    is an AI Mitra.
+                    It can make mistakes — talk naturally,
+                    but keep important decisions yours.
+
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="chat.js"></script>
+
+</body>
+
+</html>

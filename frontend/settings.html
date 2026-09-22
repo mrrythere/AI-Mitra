@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mitra Settings | AI-Mitra</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body class="settings-page">
+
+    <!-- Ambient Background -->
+
+    <div class="settings-ambient settings-ambient-warm"></div>
+    <div class="settings-ambient settings-ambient-violet"></div>
+
+
+    <main class="settings-shell">
+
+
+        <!-- HEADER -->
+
+        <header class="settings-header">
+
+            <button
+                class="settings-back-button"
+                id="backToChat"
+                type="button"
+            >
+                ← Back to Mitra
+            </button>
+
+
+            <div class="settings-brand">
+
+                <div class="settings-brand-mark">
+                    ✦
+                </div>
+
+                <span>AI-Mitra</span>
+
+            </div>
+
+
+            <div class="settings-user">
+
+                <div class="settings-user-avatar">
+                    R
+                </div>
+
+                <div>
+                    <strong>Rahul</strong>
+                    <span>Your space</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- INTRO -->
+
+        <section class="settings-intro">
+
+            <p class="settings-eyebrow">
+                YOUR MITRA
+            </p>
+
+            <h1>
+                Make
+                <span id="introMitraName">
+                    your Mitra
+                </span>
+                feel
+                <span>more yours.</span>
+            </h1>
+
+            <p>
+                See what your Mitra remembers,
+                manage the profile,
+                and control how your AI-Mitra experience feels.
+            </p>
+
+        </section>
+
+
+        <!-- CONTENT -->
+
+        <div class="settings-grid">
+
+
+            <!-- LEFT -->
+
+            <div class="settings-main-column">
+
+
+                <!-- MITRA PROFILE -->
+
+                <section class="settings-card mitra-profile-card">
+
+                    <div class="settings-card-heading">
+
+                        <div>
+
+                            <p class="settings-card-label">
+                                MITRA PROFILE
+                            </p>
+
+                            <h2 id="profileMitraName">
+                                Loading...
+                            </h2>
+
+                        </div>
+
+
+                        <div class="settings-nova-avatar-wrap">
+
+                            <div
+                                class="settings-nova-avatar"
+                                id="profileMitraAvatar"
+                            >
+                                ✦
+                            </div>
+
+                            <span></span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mitra-profile-details">
+
+                        <div class="profile-detail">
+
+                            <span>Identity</span>
+
+                            <strong id="profileMitraIdentity">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-detail">
+
+                            <span>Personality</span>
+
+                            <strong id="profileMitraPersonality">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="settings-secondary-button"
+                        id="editMitraButton"
+                        type="button"
+                    >
+                        Edit Mitra
+                    </button>
+
+                </section>
+
+
+                <!-- MEMORIES -->
+
+                <section class="settings-card memories-card">
+
+                    <div class="settings-section-heading">
+
+                        <div>
+
+                            <p class="settings-card-label">
+                                LONG-TERM MEMORY
+                            </p>
+
+                            <h2>
+                                What
+                                <span id="memoryMitraName">
+                                    your Mitra
+                                </span>
+                                remembers
+                            </h2>
+
+                            <p>
+                                These are useful details your Mitra can
+                                remember across conversations.
+                            </p>
+
+                        </div>
+
+
+                        <div class="memory-count">
+
+                            <span id="memoryCount">
+                                0
+                            </span>
+
+                            memories
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- REAL MEMORIES COME HERE -->
+
+                    <div
+                        class="memory-list"
+                        id="memoryList"
+                    ></div>
+
+
+                    <!-- EMPTY STATE -->
+
+                    <div
+                        class="memory-empty-state"
+                        id="memoryEmptyState"
+                        hidden
+                    >
+
+                        <div>✦</div>
+
+                        <strong>
+                            Nothing saved yet
+                        </strong>
+
+                        <p>
+                            Useful memories will appear here
+                            as you talk with your Mitra.
+                        </p>
+
+                    </div>
+
+
+                    <p
+                        class="settings-message"
+                        id="memoryMessage"
+                    ></p>
+
+                </section>
+
+            </div>
+
+
+            <!-- RIGHT -->
+
+            <aside class="settings-side-column">
+
+
+                <!-- EXPERIENCE -->
+
+                <section class="settings-card experience-card">
+
+                    <p class="settings-card-label">
+                        EXPERIENCE
+                    </p>
+
+                    <h2>
+                        Conversation settings
+                    </h2>
+
+
+                    <!-- AMBIENCE -->
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <strong>
+                                Adaptive ambience
+                            </strong>
+
+                            <p>
+                                Let the conversation atmosphere
+                                subtly respond to the tone.
+                            </p>
+
+                        </div>
+
+
+                        <label class="settings-switch">
+
+                            <input
+                                id="ambienceToggle"
+                                type="checkbox"
+                                checked
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- ANIMATIONS -->
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <strong>
+                                Gentle animations
+                            </strong>
+
+                            <p>
+                                Small movements that make your Mitra
+                                feel more alive.
+                            </p>
+
+                        </div>
+
+
+                        <label class="settings-switch">
+
+                            <input
+                                id="animationToggle"
+                                type="checkbox"
+                                checked
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- TRANSPARENCY -->
+
+                <section class="settings-card privacy-card">
+
+                    <p class="settings-card-label">
+                        TRANSPARENCY
+                    </p>
+
+                    <h2>
+                        You're in control
+                    </h2>
+
+                    <p>
+                        Your Mitra is an AI.
+                        Memories are shown here so you can see
+                        and control what is being kept for
+                        future conversations.
+                    </p>
+
+
+                    <div class="privacy-note">
+
+                        <span>✦</span>
+
+                        <p>
+                            Editing or deleting a memory here
+                            updates the saved long-term memory
+                            used in future conversations with
+                            this Mitra.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <p
+                    class="settings-save-status"
+                    id="settingsStatus"
+                >
+                    Connecting to your AI-Mitra...
+                </p>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+
+    <!-- EDIT MEMORY MODAL -->
+
+    <div
+        class="memory-modal-backdrop"
+        id="memoryModal"
+        hidden
+    >
+
+        <div class="memory-modal">
+
+            <div class="memory-modal-heading">
+
+                <div>
+
+                    <p class="settings-card-label">
+                        EDIT MEMORY
+                    </p>
+
+                    <h2>
+                        Correct what your Mitra remembers
+                    </h2>
+
+                </div>
+
+
+                <button
+                    class="memory-modal-close"
+                    id="closeMemoryModal"
+                    type="button"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <label class="memory-edit-field">
+
+                <span>Memory</span>
+
+                <input
+                    id="memoryEditInput"
+                    type="text"
+                    maxlength="120"
+                >
+
+            </label>
+
+
+            <div class="memory-modal-actions">
+
+                <button
+                    class="memory-cancel-button"
+                    id="cancelMemoryEdit"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    class="memory-save-button"
+                    id="saveMemoryEdit"
+                    type="button"
+                >
+                    Save change
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="settings.js"></script>
+
+</body>
+
+</html>

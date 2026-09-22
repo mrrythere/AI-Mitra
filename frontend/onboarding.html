@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Your Mitra | AI-Mitra</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body class="create-page">
+
+    <!-- Ambient Background -->
+    <div class="create-orb create-orb-one"></div>
+    <div class="create-orb create-orb-two"></div>
+
+
+    <main class="create-shell">
+
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
+        <header class="create-header">
+
+            <button
+                type="button"
+                class="back-button"
+                id="backToDashboard"
+            >
+                <span>←</span>
+                My Mitras
+            </button>
+
+
+            <div class="create-brand">
+
+                <div class="brand-icon">
+                    ✦
+                </div>
+
+                <span>
+                    AI-Mitra
+                </span>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =========================
+             INTRODUCTION
+        ========================== -->
+
+        <section class="create-intro">
+
+            <p class="create-label">
+                CREATE YOUR MITRA
+            </p>
+
+            <h1>
+                Create someone who
+                <br>
+                <span>feels right for you.</span>
+            </h1>
+
+            <p>
+                Give your AI Mitra a name, identity and personality.
+                You can always change things later.
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================
+             CREATOR LAYOUT
+        ========================== -->
+
+        <section class="creator-layout">
+
+
+            <!-- =====================
+                 FORM
+            ====================== -->
+
+            <form
+                id="mitraForm"
+                class="mitra-creator-form"
+            >
+
+
+                <!-- NAME -->
+
+                <div class="creator-section">
+
+                    <div class="creator-section-heading">
+
+                        <span class="section-number">
+                            01
+                        </span>
+
+                        <div>
+
+                            <h2>
+                                What should I call them?
+                            </h2>
+
+                            <p>
+                                Choose any name that feels natural to you.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="creator-input-wrap">
+
+                        <input
+                            type="text"
+                            id="mitraName"
+                            placeholder="e.g. Nova, Aarav, Siya..."
+                            maxlength="40"
+                            autocomplete="off"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- IDENTITY -->
+
+                <div class="creator-section">
+
+                    <div class="creator-section-heading">
+
+                        <span class="section-number">
+                            02
+                        </span>
+
+                        <div>
+
+                            <h2>
+                                Choose their identity
+                            </h2>
+
+                            <p>
+                                This helps shape how your Mitra presents itself.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="identity-options premium-options">
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="radio"
+                                name="identity"
+                                value="Male"
+                                required
+                            >
+
+                            <span>
+                                Male
+                            </span>
+
+                        </label>
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="radio"
+                                name="identity"
+                                value="Female"
+                            >
+
+                            <span>
+                                Female
+                            </span>
+
+                        </label>
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="radio"
+                                name="identity"
+                                value="Non-binary"
+                            >
+
+                            <span>
+                                Non-binary
+                            </span>
+
+                        </label>
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="radio"
+                                name="identity"
+                                value="Not specified"
+                            >
+
+                            <span>
+                                No preference
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PERSONALITY -->
+
+                <div class="creator-section">
+
+                    <div class="creator-section-heading">
+
+                        <span class="section-number">
+                            03
+                        </span>
+
+                        <div>
+
+                            <h2>
+                                What should they be like?
+                            </h2>
+
+                            <p>
+                                Pick the traits you'd enjoy talking to.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="personality-options premium-options">
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="checkbox"
+                                name="personality"
+                                value="Friendly"
+                            >
+
+                            <span>
+                                Friendly
+                            </span>
+
+                        </label>
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="checkbox"
+                                name="personality"
+                                value="Funny"
+                            >
+
+                            <span>
+                                Funny
+                            </span>
+
+                        </label>
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="checkbox"
+                                name="personality"
+                                value="Calm"
+                            >
+
+                            <span>
+                                Calm
+                            </span>
+
+                        </label>
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="checkbox"
+                                name="personality"
+                                value="Motivational"
+                            >
+
+                            <span>
+                                Motivating
+                            </span>
+
+                        </label>
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="checkbox"
+                                name="personality"
+                                value="Good listener"
+                            >
+
+                            <span>
+                                Good listener
+                            </span>
+
+                        </label>
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="checkbox"
+                                name="personality"
+                                value="Chill"
+                            >
+
+                            <span>
+                                Chill
+                            </span>
+
+                        </label>
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="checkbox"
+                                name="personality"
+                                value="Straightforward"
+                            >
+
+                            <span>
+                                Straightforward
+                            </span>
+
+                        </label>
+
+
+                        <label class="choice-chip">
+
+                            <input
+                                type="checkbox"
+                                name="personality"
+                                value="Professional"
+                            >
+
+                            <span>
+                                Professional
+                            </span>
+
+                        </label>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CUSTOM INSTRUCTIONS -->
+
+                <div class="creator-section">
+
+                    <div class="creator-section-heading">
+
+                        <span class="section-number">
+                            04
+                        </span>
+
+                        <div>
+
+                            <h2>
+                                Make them feel more yours
+                            </h2>
+
+                            <p>
+                                Optional — tell your Mitra how you'd
+                                like them to behave with you.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="creator-input-wrap">
+
+                        <textarea
+                            id="instructions"
+                            rows="5"
+                            maxlength="500"
+                            placeholder="Example: Be casual with me. Be honest when you disagree. Keep things simple when I'm stressed."
+                        ></textarea>
+
+                        <div class="character-count">
+                            <span id="instructionCount">0</span>/500
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="meet-mitra-button"
+                >
+
+                    <span id="createButtonText">
+                        Meet your Mitra
+                    </span>
+
+                    <span class="meet-star">
+                        ✦
+                    </span>
+
+                </button>
+    <!-- DELETE MITRA — ONLY SHOWN IN EDIT MODE -->
+
+                <button
+    type="button"
+    class="delete-mitra-button"
+    id="deleteMitraButton"
+    style="
+        display: none;
+        width: 100%;
+        margin-top: 14px;
+        padding: 15px 20px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 100, 100, 0.28);
+        background: rgba(120, 30, 30, 0.12);
+        color: #ff9b9b;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+    "
+>
+    Delete Mitra
+                </button>
+
+                <p
+                    id="createMessage"
+                    class="create-message"
+                ></p>
+
+
+            </form>
+
+
+
+            <!-- =====================
+                 LIVE PREVIEW
+            ====================== -->
+
+            <aside class="mitra-preview-wrap">
+
+                <div class="preview-label">
+                    LIVE PREVIEW
+                </div>
+
+
+                <article class="mitra-preview-card">
+
+
+                    <div class="preview-glow"></div>
+
+
+                    <div class="preview-avatar">
+
+                        ✦
+
+                        <span class="preview-online"></span>
+
+                    </div>
+
+
+                    <div class="preview-ai-label">
+                        YOUR AI MITRA
+                    </div>
+
+
+                    <h2 id="previewName">
+                        Your Mitra
+                    </h2>
+
+
+                    <p
+                        id="previewIdentity"
+                        class="preview-identity"
+                    >
+                        Choose an identity
+                    </p>
+
+
+                    <div
+                        id="previewTraits"
+                        class="preview-traits"
+                    >
+
+                        <span>
+                            Your chosen personality will appear here
+                        </span>
+
+                    </div>
+
+
+                    <div class="preview-message">
+
+                        <span class="preview-quote">
+                            “
+                        </span>
+
+                        <p id="previewGreeting">
+                            Hi 👋 I'm your Mitra. Give me a name
+                            and a personality, and we'll make this
+                            space ours.
+                        </p>
+
+                    </div>
+
+
+                    <div class="preview-memory">
+
+                        <span>
+                            ✦
+                        </span>
+
+                        <p>
+                            I'll learn what matters to you over time.
+                        </p>
+
+                    </div>
+
+
+                    <div class="preview-footer">
+
+                        <span class="preview-status-dot"></span>
+
+                        <span>
+                            AI Mitra · Ready when you are
+                        </span>
+
+                    </div>
+
+
+                </article>
+
+            </aside>
+
+
+        </section>
+
+
+    </main>
+
+
+    <script src="onboarding.js"></script>
+
+</body>
+
+</html>

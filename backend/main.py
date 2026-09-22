@@ -1,6 +1,9 @@
 import os
 import json
 from pathlib import Path
+from datetime import datetime
+from typing import List
+
 from dotenv import load_dotenv
 from google import genai
 
@@ -9,8 +12,6 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.middleware.cors import CORSMiddleware
 
 from pydantic import BaseModel
-from typing import List
-from datetime import datetime
 
 from backend.database import (
     save_mitra,
@@ -71,7 +72,14 @@ load_dotenv(
 
 gemini_api_key = os.getenv("GEMINI_API_KEY")
 
-client = genai.Client(api_key=gemini_api_key)
+if not gemini_api_key:
+    raise RuntimeError(
+        "GEMINI_API_KEY is missing from environment variables."
+    )
+
+client = genai.Client(
+    api_key=gemini_api_key
+)
 
 
 # -------------------------------------------------
@@ -81,9 +89,9 @@ client = genai.Client(api_key=gemini_api_key)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-    "http://127.0.0.1:5500",
-    "http://localhost:5500",
-    "https://ai-mitra-chat.netlify.app"
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+        "https://ai-mitra-chat.netlify.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -149,6 +157,29 @@ def get_current_user(
     return user_id
 
 
+# -------------------------------------------------
+# CURRENT USER PROFILE
+# -------------------------------------------------
+
+@app.get("/me")
+def get_my_profile(
+    user_id: int = Depends(get_current_user)
+):
+    db_user = get_user_by_id(user_id)
+
+    if db_user is None:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+
+    return {
+        "id": db_user[0],
+        "name": db_user[1],
+        "email": db_user[2]
+    }
+
+
 def get_current_admin(
     user_id: int = Depends(get_current_user)
 ):
@@ -160,15 +191,13 @@ def get_current_admin(
             detail="User not found"
         )
 
-    role = db_user[6]
-
-    if role != "admin":
-        raise HTTPException(
-            status_code=403,
-            detail="Admin access required"
-        )
-
-    return user_id
+    # Current users table has no role column.
+    # Admin endpoint is therefore disabled until
+    # a proper role column is added to the database.
+    raise HTTPException(
+        status_code=403,
+        detail="Admin access is not configured"
+    )
 
 
 # -------------------------------------------------
@@ -184,36 +213,24 @@ def home():
 
 
 # -------------------------------------------------
-# CREATE MITRA
-# -------------------------------------------------
-
-@app.post("/create-mitra")
-def create_mitra(
-    profile: MitraProfile,
-    user_id: int = Depends(get_current_user)
-):
-    personality_text = ", ".join(profile.personality)
-
-    save_mitra(
-        user_id,
-        profile.name,
-        profile.identity,
-        personality_text,
-        profile.instructions
-    )
-
-    return {
-        "message": f"{profile.name} has been created successfully!"
-    }
-
-
-# -------------------------------------------------
 # SIGNUP
 # -------------------------------------------------
 
 @app.post("/signup")
 def signup(user: SignupRequest):
-    hashed_password = hash_password(user.password)
+    existing_user = get_user_by_email(
+        user.email
+    )
+
+    if existing_user is not None:
+        raise HTTPException(
+            status_code=400,
+            detail="An account with this email already exists"
+        )
+
+    hashed_password = hash_password(
+        user.password
+    )
 
     created_at = datetime.now().isoformat()
 
@@ -225,7 +242,8 @@ def signup(user: SignupRequest):
     )
 
     return {
-        "message": f"Account created successfully for {user.name}"
+        "message":
+            f"Account created successfully for {user.name}"
     }
 
 
@@ -235,7 +253,9 @@ def signup(user: SignupRequest):
 
 @app.post("/login")
 def login(user: LoginRequest):
-    db_user = get_user_by_email(user.email)
+    db_user = get_user_by_email(
+        user.email
+    )
 
     if db_user is None:
         raise HTTPException(
@@ -266,9 +286,12 @@ def login(user: LoginRequest):
     )
 
     return {
-        "message": f"Welcome back, {db_user[1]}!",
-        "access_token": access_token,
-        "token_type": "bearer"
+        "message":
+            f"Welcome back, {db_user[1]}!",
+        "access_token":
+            access_token,
+        "token_type":
+            "bearer"
     }
 
 
@@ -288,6 +311,33 @@ def admin_users(
 
 
 # -------------------------------------------------
+# CREATE MITRA
+# -------------------------------------------------
+
+@app.post("/create-mitra")
+def create_mitra(
+    profile: MitraProfile,
+    user_id: int = Depends(get_current_user)
+):
+    personality_text = ", ".join(
+        profile.personality
+    )
+
+    save_mitra(
+        user_id,
+        profile.name,
+        profile.identity,
+        personality_text,
+        profile.instructions
+    )
+
+    return {
+        "message":
+            f"{profile.name} has been created successfully!"
+    }
+
+
+# -------------------------------------------------
 # MY MITRAS
 # -------------------------------------------------
 
@@ -295,7 +345,9 @@ def admin_users(
 def my_mitras(
     user_id: int = Depends(get_current_user)
 ):
-    mitras = get_mitras_by_user(user_id)
+    mitras = get_mitras_by_user(
+        user_id
+    )
 
     return {
         "mitras": mitras
@@ -333,7 +385,9 @@ def update_mitra(
     profile: MitraProfile,
     user_id: int = Depends(get_current_user)
 ):
-    personality_text = ", ".join(profile.personality)
+    personality_text = ", ".join(
+        profile.personality
+    )
 
     updated_rows = update_mitra_for_user(
         mitra_id,
@@ -351,7 +405,8 @@ def update_mitra(
         )
 
     return {
-        "message": f"{profile.name} updated successfully!"
+        "message":
+            f"{profile.name} updated successfully!"
     }
 
 
@@ -376,7 +431,8 @@ def delete_mitra(
         )
 
     return {
-        "message": "Mitra deleted successfully!"
+        "message":
+            "Mitra deleted successfully!"
     }
 
 
@@ -413,7 +469,7 @@ def chat_with_mitra(
 
 
     # -------------------------------------------------
-    # 2. GET RECENT CHAT HISTORY
+    # 2. RECENT CHAT HISTORY
     # -------------------------------------------------
 
     history = get_recent_chat_history(
@@ -425,22 +481,18 @@ def chat_with_mitra(
     history_text = ""
 
     for role, message in history:
-
         if role == "user":
-
             history_text += (
                 f"User: {message}\n"
             )
-
         else:
-
             history_text += (
                 f"{mitra_name}: {message}\n"
             )
 
 
     # -------------------------------------------------
-    # 3. GET LONG-TERM MEMORIES
+    # 3. LONG-TERM MEMORIES
     # -------------------------------------------------
 
     memories = get_memories(
@@ -451,21 +503,18 @@ def chat_with_mitra(
     memory_text = ""
 
     for memory_key, memory_value in memories:
-
         memory_text += (
             f"{memory_key}: {memory_value}\n"
         )
 
-
     if not memory_text:
-
         memory_text = (
             "No saved long-term memories."
         )
 
 
     # -------------------------------------------------
-    # 4. BUILD SMART PROMPT
+    # 4. SMART PROMPT
     # -------------------------------------------------
 
     prompt = f"""
@@ -660,18 +709,16 @@ Talk naturally as {mitra_name}.
 
 
     # -------------------------------------------------
-    # 5. ONE GEMINI API CALL
+    # 5. GEMINI API CALL
     # -------------------------------------------------
 
     try:
-
         interaction = client.interactions.create(
             model="gemini-3.6-flash",
             input=prompt
         )
 
     except Exception as error:
-
         print(
             "Gemini API Error:",
             error
@@ -701,9 +748,7 @@ Talk naturally as {mitra_name}.
         .strip()
     )
 
-
     try:
-
         ai_data = json.loads(
             clean_output
         )
@@ -712,7 +757,6 @@ Talk naturally as {mitra_name}.
         json.JSONDecodeError,
         TypeError
     ):
-
         print(
             "Invalid Gemini JSON:",
             raw_output
@@ -728,16 +772,14 @@ Talk naturally as {mitra_name}.
 
 
     # -------------------------------------------------
-    # 7. GET AI REPLY
+    # 7. AI REPLY
     # -------------------------------------------------
 
     ai_reply = ai_data.get(
         "reply"
     )
 
-
     if not ai_reply:
-
         raise HTTPException(
             status_code=502,
             detail=(
@@ -758,7 +800,6 @@ Talk naturally as {mitra_name}.
         )
     )
 
-
     should_delete_memory = bool(
         ai_data.get(
             "delete_memory",
@@ -766,11 +807,9 @@ Talk naturally as {mitra_name}.
         )
     )
 
-
     memory_key = ai_data.get(
         "memory_key"
     )
-
 
     memory_value = ai_data.get(
         "memory_value"
@@ -782,13 +821,11 @@ Talk naturally as {mitra_name}.
     # -------------------------------------------------
 
     if memory_key:
-
         memory_key = (
             memory_key
             .strip()
             .lower()
         )
-
 
         memory_key = (
             memory_key.replace(
@@ -806,16 +843,11 @@ Talk naturally as {mitra_name}.
         should_delete_memory
         and memory_key
     ):
-
         delete_memory(
             user_id,
             mitra_id,
             memory_key
         )
-
-
-        # A forget request must never accidentally
-        # save the same fact again.
 
         save_memory = False
         memory_value = None
@@ -830,11 +862,9 @@ Talk naturally as {mitra_name}.
         and memory_key
         and memory_value
     ):
-
         current_time = (
             datetime.now().isoformat()
         )
-
 
         save_or_update_memory(
             user_id,
@@ -873,284 +903,7 @@ Talk naturally as {mitra_name}.
 
 
     # -------------------------------------------------
-    # 14. SEND REPLY
-    # -------------------------------------------------
-
-    return {
-        "mitra": mitra_name,
-        "reply": ai_reply
-    }
-
-    # -------------------------------------------------
-    # 2. GET RECENT CHAT HISTORY
-    # -------------------------------------------------
-
-    history = get_recent_chat_history(
-        user_id,
-        mitra_id,
-        limit=20
-    )
-
-    history_text = ""
-
-    for role, message in history:
-        if role == "user":
-            history_text += f"User: {message}\n"
-        else:
-            history_text += f"{mitra_name}: {message}\n"
-
-
-    # -------------------------------------------------
-    # 3. GET LONG-TERM MEMORIES
-    # -------------------------------------------------
-
-    memories = get_memories(
-        user_id,
-        mitra_id
-    )
-
-    memory_text = ""
-
-    for memory_key, memory_value in memories:
-        memory_text += (
-            f"{memory_key}: {memory_value}\n"
-        )
-
-
-    # -------------------------------------------------
-    # 4. BUILD SMART PROMPT
-    #
-    # IMPORTANT:
-    # Gemini now does TWO jobs in ONE API call:
-    #
-    # 1. Generate Nova's reply
-    # 2. Decide whether the user's message contains
-    #    useful long-term memory
-    # -------------------------------------------------
-
-    prompt = f"""
-You are {mitra_name}, an AI Mitra.
-
-Identity:
-{mitra_identity}
-
-Personality:
-{mitra_personality}
-
-User instructions:
-{mitra_instructions}
-
-Useful long-term memories about the user:
-{memory_text}
-
-Recent conversation:
-{history_text}
-
-Current user message:
-{chat.message}
-
-
-You must do TWO tasks:
-
-TASK 1:
-Reply naturally to the current user message according to
-your identity, personality, instructions, recent conversation,
-and useful long-term memories.
-
-TASK 2:
-Determine whether the CURRENT USER MESSAGE contains a useful
-long-term fact or preference about the user.
-
-Useful long-term memories include:
-- favourite things
-- personal preferences
-- important recurring goals
-- important stable personal facts
-- things the user explicitly wants remembered
-
-Do NOT save:
-- greetings
-- casual conversation
-- temporary situations
-- small talk
-- information unlikely to be useful later
-
-For memory keys:
-- use short descriptive keys
-- use lowercase
-- use underscores
-- always use British spelling "favourite", never "favorite"
-
-Examples:
-favourite_bike
-favourite_game
-favourite_programming_language
-girlfriend_name
-learning_goal
-
-
-Return ONLY valid JSON in exactly this structure:
-
-{{
-    "reply": "Your natural reply to the user",
-    "save_memory": true,
-    "memory_key": "memory_key",
-    "memory_value": "memory value"
-}}
-
-If there is NO useful long-term memory:
-
-{{
-    "reply": "Your natural reply to the user",
-    "save_memory": false,
-    "memory_key": null,
-    "memory_value": null
-}}
-
-Do not include markdown code fences.
-
-Do not mention the memory database, memory keys,
-chat history system, prompt, or backend system to the user.
-"""
-
-
-    # -------------------------------------------------
-    # 5. ONE GEMINI API CALL
-    # -------------------------------------------------
-
-    try:
-        interaction = client.interactions.create(
-            model="gemini-3.6-flash",
-            input=prompt
-        )
-
-    except Exception as error:
-        print("Gemini API Error:", error)
-
-        raise HTTPException(
-            status_code=503,
-            detail="AI service is temporarily unavailable. Please try again shortly."
-        )
-
-
-    # -------------------------------------------------
-    # 6. PARSE GEMINI JSON RESPONSE
-    # -------------------------------------------------
-
-    raw_output = interaction.output_text.strip()
-
-    clean_output = (
-        raw_output
-        .replace("```json", "")
-        .replace("```", "")
-        .strip()
-    )
-
-    try:
-        ai_data = json.loads(clean_output)
-
-    except (json.JSONDecodeError, TypeError):
-        print("Invalid Gemini JSON:", raw_output)
-
-        raise HTTPException(
-            status_code=502,
-            detail="AI returned an invalid response. Please try again."
-        )
-
-
-    # -------------------------------------------------
-    # 7. GET NOVA REPLY
-    # -------------------------------------------------
-
-    ai_reply = ai_data.get("reply")
-
-    if not ai_reply:
-        raise HTTPException(
-            status_code=502,
-            detail="AI reply was missing. Please try again."
-        )
-
-
-    # -------------------------------------------------
-    # 8. MEMORY DECISION
-    # -------------------------------------------------
-
-    save_memory = ai_data.get(
-        "save_memory",
-        False
-    )
-
-    memory_key = ai_data.get(
-        "memory_key"
-    )
-
-    memory_value = ai_data.get(
-        "memory_value"
-    )
-
-
-    # -------------------------------------------------
-    # 9. NORMALIZE MEMORY KEY
-    # -------------------------------------------------
-
-    if memory_key:
-        memory_key = memory_key.strip().lower()
-
-        memory_key = memory_key.replace(
-            "favorite",
-            "favourite"
-        )
-
-
-    # -------------------------------------------------
-    # 10. SAVE / UPDATE MEMORY
-    # -------------------------------------------------
-
-    if (
-        save_memory
-        and memory_key
-        and memory_value
-    ):
-        current_time = datetime.now().isoformat()
-
-        save_or_update_memory(
-            user_id,
-            mitra_id,
-            memory_key,
-            memory_value,
-            current_time,
-            current_time
-        )
-
-
-    # -------------------------------------------------
-    # 11. SAVE CURRENT USER MESSAGE
-    # -------------------------------------------------
-
-    save_message(
-        user_id,
-        mitra_id,
-        "user",
-        chat.message,
-        datetime.now().isoformat()
-    )
-
-
-    # -------------------------------------------------
-    # 12. SAVE AI REPLY
-    # -------------------------------------------------
-
-    save_message(
-        user_id,
-        mitra_id,
-        "assistant",
-        ai_reply,
-        datetime.now().isoformat()
-    )
-
-
-    # -------------------------------------------------
-    # 13. SEND REPLY TO FRONTEND
+    # 14. RESPONSE
     # -------------------------------------------------
 
     return {
@@ -1160,7 +913,7 @@ chat history system, prompt, or backend system to the user.
 
 
 # -------------------------------------------------
-# GET COMPLETE CHAT HISTORY
+# COMPLETE CHAT HISTORY
 # -------------------------------------------------
 
 @app.get("/my-mitras/{mitra_id}/history")
@@ -1168,8 +921,6 @@ def chat_history(
     mitra_id: int,
     user_id: int = Depends(get_current_user)
 ):
-
-    # Ownership check
     mitra = get_mitra_by_id_for_user(
         mitra_id,
         user_id
@@ -1181,8 +932,6 @@ def chat_history(
             detail="Mitra not found"
         )
 
-    # Full history is for the frontend.
-    # Gemini itself only receives recent history.
     history = get_chat_history(
         user_id,
         mitra_id
@@ -1199,6 +948,7 @@ def chat_history(
         ]
     }
 
+
 # -------------------------------------------------
 # MEMORY SETTINGS API
 # -------------------------------------------------
@@ -1208,66 +958,119 @@ def get_mitra_memories(
     mitra_id: int,
     user_id: int = Depends(get_current_user)
 ):
-    mitra = get_mitra_by_id_for_user(mitra_id, user_id)
+    mitra = get_mitra_by_id_for_user(
+        mitra_id,
+        user_id
+    )
 
     if mitra is None:
-        raise HTTPException(status_code=404, detail="Mitra not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Mitra not found"
+        )
 
-    memories = get_memories(user_id, mitra_id)
+    memories = get_memories(
+        user_id,
+        mitra_id
+    )
 
     return {
         "mitra": mitra[1],
         "memories": [
-            {"key": memory_key, "value": memory_value}
-            for memory_key, memory_value in memories
+            {
+                "key": memory_key,
+                "value": memory_value
+            }
+            for memory_key, memory_value
+            in memories
         ]
     }
 
 
-@app.put("/my-mitras/{mitra_id}/memories/{memory_key}")
+@app.put(
+    "/my-mitras/{mitra_id}/memories/{memory_key}"
+)
 def edit_mitra_memory(
     mitra_id: int,
     memory_key: str,
     memory: MemoryUpdateRequest,
     user_id: int = Depends(get_current_user)
 ):
-    mitra = get_mitra_by_id_for_user(mitra_id, user_id)
+    mitra = get_mitra_by_id_for_user(
+        mitra_id,
+        user_id
+    )
 
     if mitra is None:
-        raise HTTPException(status_code=404, detail="Mitra not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Mitra not found"
+        )
 
     new_value = memory.value.strip()
+
     if not new_value:
-        raise HTTPException(status_code=400, detail="Memory value cannot be empty")
+        raise HTTPException(
+            status_code=400,
+            detail="Memory value cannot be empty"
+        )
 
     updated_rows = update_memory(
-        user_id, mitra_id, memory_key, new_value, datetime.now().isoformat()
+        user_id,
+        mitra_id,
+        memory_key,
+        new_value,
+        datetime.now().isoformat()
     )
 
     if updated_rows == 0:
-        raise HTTPException(status_code=404, detail="Memory not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Memory not found"
+        )
 
     return {
-        "message": "Memory updated successfully!",
-        "key": memory_key,
-        "value": new_value
+        "message":
+            "Memory updated successfully!",
+        "key":
+            memory_key,
+        "value":
+            new_value
     }
 
 
-@app.delete("/my-mitras/{mitra_id}/memories/{memory_key}")
+@app.delete(
+    "/my-mitras/{mitra_id}/memories/{memory_key}"
+)
 def remove_mitra_memory(
     mitra_id: int,
     memory_key: str,
     user_id: int = Depends(get_current_user)
 ):
-    mitra = get_mitra_by_id_for_user(mitra_id, user_id)
+    mitra = get_mitra_by_id_for_user(
+        mitra_id,
+        user_id
+    )
 
     if mitra is None:
-        raise HTTPException(status_code=404, detail="Mitra not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Mitra not found"
+        )
 
-    deleted_rows = delete_memory(user_id, mitra_id, memory_key)
+    deleted_rows = delete_memory(
+        user_id,
+        mitra_id,
+        memory_key
+    )
 
     if deleted_rows == 0:
-        raise HTTPException(status_code=404, detail="Memory not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Memory not found"
+        )
 
-    return {"message": "Memory deleted successfully!"}
+    return {
+        "message":
+            "Memory deleted successfully!"
+    }

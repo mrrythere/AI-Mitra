@@ -1,6 +1,6 @@
 // =========================================================
 // AI-MITRA
-// Real Multi-Mitra Dashboard + User Logout
+// Real Multi-Mitra Dashboard + Dynamic User + Logout
 // =========================================================
 
 const API_BASE_URL =
@@ -29,6 +29,15 @@ const userDropdown =
 const logoutButton =
     document.getElementById("logoutButton");
 
+const headerUserName =
+    document.getElementById("headerUserName");
+
+const greetingUserName =
+    document.getElementById("greetingUserName");
+
+const userAvatar =
+    document.getElementById("userAvatar");
+
 
 // =========================================================
 // AUTH
@@ -42,6 +51,115 @@ if (!token) {
 
     window.location.href =
         "index.html";
+
+}
+
+
+// =========================================================
+// HANDLE UNAUTHORIZED
+// =========================================================
+
+function handleUnauthorized() {
+
+    sessionStorage.removeItem(
+        "ai_mitra_token"
+    );
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+// =========================================================
+// LOAD CURRENT LOGGED-IN USER
+// =========================================================
+
+async function loadCurrentUser() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE_URL}/me`,
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`
+                    }
+                }
+            );
+
+
+        if (response.status === 401) {
+
+            handleUnauthorized();
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            console.error(
+                data.detail ||
+                "Could not load user profile."
+            );
+
+            return;
+
+        }
+
+
+        const userName =
+            data.name &&
+            data.name.trim()
+                ? data.name.trim()
+                : "User";
+
+
+        if (headerUserName) {
+
+            headerUserName.textContent =
+                userName;
+
+        }
+
+
+        if (greetingUserName) {
+
+            greetingUserName.textContent =
+                `${userName}.`;
+
+        }
+
+
+        if (userAvatar) {
+
+            userAvatar.textContent =
+                userName
+                    .charAt(0)
+                    .toUpperCase();
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "User Profile API Error:",
+            error
+        );
+
+    }
 
 }
 
@@ -140,22 +258,6 @@ if (createMitraCard) {
         "click",
         openCreateMitra
     );
-
-}
-
-
-// =========================================================
-// HANDLE UNAUTHORIZED
-// =========================================================
-
-function handleUnauthorized() {
-
-    sessionStorage.removeItem(
-        "ai_mitra_token"
-    );
-
-    window.location.href =
-        "index.html";
 
 }
 
@@ -731,4 +833,5 @@ async function loadMitras() {
 // START DASHBOARD
 // =========================================================
 
+loadCurrentUser();
 loadMitras();
